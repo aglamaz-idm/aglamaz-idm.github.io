@@ -1,145 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-<title>Hacı </title>
-
+<meta charset="UTF-8">
+<title>Hacı OS Terminal Portfolio</title>
 <style>
-
-body{
-margin:0;
-overflow:hidden;
-background:black;
-color:#00ff00;
-font-family:monospace;
+body {
+  margin: 0;
+  padding: 0;
+  background: black;
+  color: #00ff00;
+  font-family: monospace;
+  overflow: hidden;
 }
 
-#terminal{
-position:absolute;
-top:20px;
-left:20px;
-width:500px;
-background:rgba(0,0,0,0.6);
-padding:20px;
-border:1px solid #00ff00;
+/* Kayan kodlar için canvas */
+#matrix {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
 }
 
-input{
-background:black;
-color:#00ff00;
-border:none;
-outline:none;
-width:100%;
-font-family:monospace;
+/* Terminal */
+#terminal {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1;
+  background: rgba(0,0,0,0.6);
+  padding: 20px;
+  border: 1px solid #00ff00;
+  width: 600px;
+  max-width: 90%;
+  min-height: 150px;
 }
 
-canvas{
-display:block;
+#output {
+  white-space: pre-wrap;
+  margin-bottom: 10px;
 }
 
+input {
+  background: black;
+  color: #00ff00;
+  border: none;
+  outline: none;
+  width: 100%;
+  font-family: monospace;
+}
 </style>
 </head>
-
 <body>
 
-<div id="terminal">
-<div id="output">
-Hacı  v1.0 başlatılıyor...
-Type "help" for commands
-</div>
-<input id="cmd" autofocus />
-</div>
+<canvas id="matrix"></canvas>
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+<div id="terminal">
+  <div id="output">Hacı OS Terminal Portfolio Başlatıldı...</div>
+  <input id="cmd" autofocus placeholder="Komut yaz: about / projects / contact" />
+</div>
 
 <script>
+// ------------------- MATRIX KODLARI -------------------
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
 
-const scene = new THREE.Scene()
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-const camera = new THREE.PerspectiveCamera(
-75,
-window.innerWidth/window.innerHeight,
-0.1,
-1000
-)
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@$%&*+-";
+const fontSize = 16;
+const columns = canvas.width / fontSize;
 
-const renderer = new THREE.WebGLRenderer()
+const drops = [];
+for(let x = 0; x < columns; x++) drops[x] = Math.random()*canvas.height;
 
-renderer.setSize(window.innerWidth,window.innerHeight)
+function draw() {
+  ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
 
-document.body.appendChild(renderer.domElement)
+  ctx.fillStyle = "#0F0";
+  ctx.font = fontSize + "px monospace";
 
-const geometry = new THREE.SphereGeometry(2,64,64)
-
-const texture = new THREE.TextureLoader().load(
-"https://threejs.org/examples/textures/earth_atmos_2048.jpg"
-)
-
-const material = new THREE.MeshBasicMaterial({map:texture})
-
-const earth = new THREE.Mesh(geometry,material)
-
-scene.add(earth)
-
-camera.position.z = 5
-
-function animate(){
-
-requestAnimationFrame(animate)
-
-earth.rotation.y += 0.002
-
-renderer.render(scene,camera)
-
+  for(let i = 0; i < drops.length; i++) {
+    const text = letters.charAt(Math.floor(Math.random()*letters.length));
+    ctx.fillText(text, i*fontSize, drops[i]);
+    drops[i] += fontSize;
+    if(drops[i] > canvas.height && Math.random() > 0.975) drops[i] = 0;
+  }
 }
+setInterval(draw, 50);
 
-animate()
+window.addEventListener("resize", ()=>{
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
 
-const output = document.getElementById("output")
-const input = document.getElementById("cmd")
+// ------------------- TERMINAL -------------------
+const output = document.getElementById("output");
+const input = document.getElementById("cmd");
 
 const commands = {
+  about: "Hacı OS Portfolio\nDeveloper: Yusuf Aglamaz\nKısa Bilgi: Web & Terminal Portfolio",
+  projects: "Projeler:\n- Terminal Portfolyo\n- Matrix Kodları\n- Diğer Web Projeleri",
+  contact: "İletişim:\nyusufaglamaz9904@gmail.com"
+};
 
-help:
-"Commands:\nabout\nclear\nhelp",
-
-about:
-"Developer: Yusuf Aglamaz\nContact: yusufaglamaz9904@gmail.com\nTerminal Portfolio",
-
-clear:
-function(){output.innerHTML=""}
-
-}
-
-input.addEventListener("keydown",function(e){
-
-if(e.key==="Enter"){
-
-let cmd = input.value.toLowerCase()
-
-if(commands[cmd]){
-
-if(typeof commands[cmd] === "function"){
-
-commands[cmd]()
-
-}else{
-
-output.innerHTML += "<br>> "+cmd+"<br>"+commands[cmd]
-
-}
-
-}else{
-
-output.innerHTML += "<br>> "+cmd+"<br>Command not found"
-
-}
-
-input.value=""
-
-}
-
-})
-
+input.addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    const cmd = input.value.toLowerCase();
+    if(commands[cmd]){
+      output.innerHTML += "\n> " + cmd + "\n" + commands[cmd];
+    } else {
+      output.innerHTML += "\n> " + cmd + "\nBilinmeyen komut";
+    }
+    input.value = "";
+    output.scrollTop = output.scrollHeight;
+  }
+});
 </script>
 
 </body>
