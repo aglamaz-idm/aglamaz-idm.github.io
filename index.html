@@ -7,74 +7,56 @@ body{
 background:black;
 color:#00ff00;
 font-family:monospace;
-overflow:hidden;
+margin:0;
+padding:0;
 }
-canvas{
-position:absolute;
-top:0;
-left:0;
+#terminal{
+padding:20px;
+white-space:pre-wrap;
 }
-.center{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:30px;
+input{
+background:black;
+color:#00ff00;
+border:none;
+outline:none;
+font-family:monospace;
+width:95%;
 }
 </style>
 </head>
-
 <body>
 
-<canvas id="matrix"></canvas>
-
-<div class="center">
-Hacı OS v1.0 başlatılıyor...
+<div id="terminal">Hacı v1.0 başlatılıyor...
+Type 'help' for commands
 </div>
+<input id="cmd" autofocus />
 
 <script>
+const term = document.getElementById('terminal');
+const input = document.getElementById('cmd');
 
-var c = document.getElementById("matrix");
-var ctx = c.getContext("2d");
+const commands = {
+  help: "Available commands:\nabout - About me\nhelp - Show this help\nclear - Clear terminal",
+  about: "Hacı  Portfolio\nYusuf Aglamaz - Developer\nContact: yusufaglamaz9904@gmail.com",
+  clear: () => { term.textContent = ''; }
+};
 
-c.height = window.innerHeight;
-c.width = window.innerWidth;
-
-var letters = "HACIDEVELOPER01";
-letters = letters.split("");
-
-var fontSize = 14;
-var columns = c.width/fontSize;
-
-var drops = [];
-for(var x=0;x<columns;x++)
-drops[x]=1;
-
-function draw(){
-
-ctx.fillStyle="rgba(0,0,0,0.05)";
-ctx.fillRect(0,0,c.width,c.height);
-
-ctx.fillStyle="#0F0";
-ctx.font=fontSize+"px monospace";
-
-for(var i=0;i<drops.length;i++){
-
-var text = letters[Math.floor(Math.random()*letters.length)];
-
-ctx.fillText(text,i*fontSize,drops[i]*fontSize);
-
-if(drops[i]*fontSize>c.height && Math.random()>0.975)
-drops[i]=0;
-
-drops[i]++;
-
-}
-
-}
-
-setInterval(draw,33);
-
+input.addEventListener('keydown', function(e){
+  if(e.key === 'Enter'){
+    let cmd = input.value.toLowerCase();
+    if(commands[cmd]){
+      if(typeof commands[cmd] === 'function'){
+        commands[cmd]();
+      } else {
+        term.textContent += "\n> " + cmd + "\n" + commands[cmd];
+      }
+    } else {
+      term.textContent += "\n> " + cmd + "\nCommand not found";
+    }
+    input.value = '';
+    term.scrollTop = term.scrollHeight;
+  }
+});
 </script>
 
 </body>
