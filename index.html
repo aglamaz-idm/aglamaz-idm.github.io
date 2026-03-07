@@ -1,63 +1,145 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Hacı OS</title>
+<title>Hacı </title>
+
 <style>
+
 body{
+margin:0;
+overflow:hidden;
 background:black;
 color:#00ff00;
 font-family:monospace;
-margin:0;
-padding:0;
 }
+
 #terminal{
+position:absolute;
+top:20px;
+left:20px;
+width:500px;
+background:rgba(0,0,0,0.6);
 padding:20px;
-white-space:pre-wrap;
+border:1px solid #00ff00;
 }
+
 input{
 background:black;
 color:#00ff00;
 border:none;
 outline:none;
+width:100%;
 font-family:monospace;
-width:95%;
 }
+
+canvas{
+display:block;
+}
+
 </style>
 </head>
+
 <body>
 
-<div id="terminal">Hacı v1.0 başlatılıyor...
-Type 'help' for commands
+<div id="terminal">
+<div id="output">
+Hacı  v1.0 başlatılıyor...
+Type "help" for commands
 </div>
 <input id="cmd" autofocus />
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
 
 <script>
-const term = document.getElementById('terminal');
-const input = document.getElementById('cmd');
+
+const scene = new THREE.Scene()
+
+const camera = new THREE.PerspectiveCamera(
+75,
+window.innerWidth/window.innerHeight,
+0.1,
+1000
+)
+
+const renderer = new THREE.WebGLRenderer()
+
+renderer.setSize(window.innerWidth,window.innerHeight)
+
+document.body.appendChild(renderer.domElement)
+
+const geometry = new THREE.SphereGeometry(2,64,64)
+
+const texture = new THREE.TextureLoader().load(
+"https://threejs.org/examples/textures/earth_atmos_2048.jpg"
+)
+
+const material = new THREE.MeshBasicMaterial({map:texture})
+
+const earth = new THREE.Mesh(geometry,material)
+
+scene.add(earth)
+
+camera.position.z = 5
+
+function animate(){
+
+requestAnimationFrame(animate)
+
+earth.rotation.y += 0.002
+
+renderer.render(scene,camera)
+
+}
+
+animate()
+
+const output = document.getElementById("output")
+const input = document.getElementById("cmd")
 
 const commands = {
-  help: "Available commands:\nabout - About me\nhelp - Show this help\nclear - Clear terminal",
-  about: "Hacı  Portfolio\nYusuf Aglamaz - Developer\nContact: yusufaglamaz9904@gmail.com",
-  clear: () => { term.textContent = ''; }
-};
 
-input.addEventListener('keydown', function(e){
-  if(e.key === 'Enter'){
-    let cmd = input.value.toLowerCase();
-    if(commands[cmd]){
-      if(typeof commands[cmd] === 'function'){
-        commands[cmd]();
-      } else {
-        term.textContent += "\n> " + cmd + "\n" + commands[cmd];
-      }
-    } else {
-      term.textContent += "\n> " + cmd + "\nCommand not found";
-    }
-    input.value = '';
-    term.scrollTop = term.scrollHeight;
-  }
-});
-  
+help:
+"Commands:\nabout\nclear\nhelp",
+
+about:
+"Developer: Yusuf Aglamaz\nContact: yusufaglamaz9904@gmail.com\nTerminal Portfolio",
+
+clear:
+function(){output.innerHTML=""}
+
+}
+
+input.addEventListener("keydown",function(e){
+
+if(e.key==="Enter"){
+
+let cmd = input.value.toLowerCase()
+
+if(commands[cmd]){
+
+if(typeof commands[cmd] === "function"){
+
+commands[cmd]()
+
+}else{
+
+output.innerHTML += "<br>> "+cmd+"<br>"+commands[cmd]
+
+}
+
+}else{
+
+output.innerHTML += "<br>> "+cmd+"<br>Command not found"
+
+}
+
+input.value=""
+
+}
+
+})
+
 </script>
 
 </body>
