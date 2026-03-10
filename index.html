@@ -2,121 +2,125 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Hacı OS Terminal Portfolio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Terminal</title>
+
 <style>
-body {
-  margin: 0;
-  padding: 0;
-  background: black;
-  color: #00ff00;
-  font-family: monospace;
-  overflow: hidden;
+body{
+  margin:0;
+  background:#000;
+  color:#00ff9c;
+  font-family:monospace;
+  overflow:hidden;
 }
 
-/* Kayan kodlar için canvas */
-#matrix {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 0;
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:0;
 }
 
-/* Terminal */
-#terminal {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 1;
-  background: rgba(0,0,0,0.6);
-  padding: 20px;
-  border: 1px solid #00ff00;
-  width: 600px;
-  max-width: 90%;
-  min-height: 150px;
+.content{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  max-width:700px;
+  width:90%;
+  text-align:center;
+  white-space:pre-line;
+  font-size:16px;
+  line-height:1.6;
+  z-index:1;
 }
 
-#output {
-  white-space: pre-wrap;
-  margin-bottom: 10px;
+.cursor{
+  display:inline-block;
+  margin-left:4px;
+  animation:blink 1s steps(1,end) infinite;
 }
 
-input {
-  background: black;
-  color: #00ff00;
-  border: none;
-  outline: none;
-  width: 100%;
-  font-family: monospace;
+@keyframes blink{
+  0%, 50%, 100%{opacity:1;}
+  25%, 75%{opacity:0;}
 }
 </style>
 </head>
+
 <body>
 
 <canvas id="matrix"></canvas>
 
-<div id="terminal">
-  <div id="output">Hacı OS Terminal Portfolio Başlatıldı...</div>
-  <input id="cmd" autofocus placeholder="Komut yaz: about / projects / contact" />
+<div class="content">
+  <span id="bio"></span><span class="cursor">|</span>
 </div>
 
 <script>
-// ------------------- MATRIX KODLARI -------------------
+// Matrix arka plan
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@$%&*+-";
-const fontSize = 16;
-const columns = canvas.width / fontSize;
-
-const drops = [];
-for(let x = 0; x < columns; x++) drops[x] = Math.random()*canvas.height;
-
-function draw() {
-  ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  ctx.fillStyle = "#0F0";
-  ctx.font = fontSize + "px monospace";
-
-  for(let i = 0; i < drops.length; i++) {
-    const text = letters.charAt(Math.floor(Math.random()*letters.length));
-    ctx.fillText(text, i*fontSize, drops[i]);
-    drops[i] += fontSize;
-    if(drops[i] > canvas.height && Math.random() > 0.975) drops[i] = 0;
-  }
-}
-setInterval(draw, 50);
-
-window.addEventListener("resize", ()=>{
+function resize(){
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-});
+}
+resize();
+window.addEventListener("resize", resize);
 
-// ------------------- TERMINAL -------------------
-const output = document.getElementById("output");
-const input = document.getElementById("cmd");
+const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const fontSize = 14;
+let columns = Math.floor(canvas.width / fontSize);
+let drops = Array(columns).fill(1);
 
-const commands = {
-  about: "Hacı OS Portfolio\nDeveloper: Yusuf Aglamaz\nKısa Bilgi: Web & Terminal Portfolio",
-  projects: "Projeler:\n- Terminal Portfolyo\n- Matrix Kodları\n- Diğer Web Projeleri",
-  contact: "İletişim:\nyusufaglamaz9904@gmail.com"
-};
+function drawMatrix(){
+  ctx.fillStyle = "rgba(0,0,0,0.05)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
 
-input.addEventListener("keydown", function(e){
-  if(e.key === "Enter"){
-    const cmd = input.value.toLowerCase();
-    if(commands[cmd]){
-      output.innerHTML += "\n> " + cmd + "\n" + commands[cmd];
-    } else {
-      output.innerHTML += "\n> " + cmd + "\nBilinmeyen komut";
+  ctx.fillStyle = "#00ff9c";
+  ctx.font = fontSize + "px monospace";
+
+  for(let i=0;i<drops.length;i++){
+    const text = letters[Math.floor(Math.random()*letters.length)];
+    ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+
+    if(drops[i]*fontSize > canvas.height && Math.random() > 0.975){
+      drops[i] = 0;
     }
-    input.value = "";
-    output.scrollTop = output.scrollHeight;
+    drops[i]++;
   }
-});
+}
+setInterval(drawMatrix,33);
+
+// Yazı animasyonu
+const bioText = `Merhaba, ben yusuf
+
+Teknoloji ve yazılım dünyasında sürekli öğrenen bir geliştiriciyim.
+Özellikle Python ve yapay zeka alanlarında kendimi geliştiriyor,
+projeler üretiyorum. Amacım geleceğin yazılım sistemlerini
+tasarlayabilecek ve geliştirebilecek seviyeye ulaşmak.
+
+İlgi alanlarım arasında yazılım geliştirme, otomotiv teknolojileri
+ve ileri mühendislik sistemleri yer alıyor. Her zaman öğrenmeye,
+denemeye ve yenilikçi çözümler üretmeye odaklanıyorum.
+
+Kısa vadede amacım kendi projelerimi hayata geçirmek ve
+deneyim kazanmak; uzun vadede ise büyük teknoloji ve
+savunma sanayisi projelerinde aktif rol almak.`;
+
+const bio = document.getElementById("bio");
+let i = 0;
+
+function typeWriter(){
+  if(i < bioText.length){
+    bio.textContent += bioText.charAt(i);
+    i++;
+    setTimeout(typeWriter, 30);
+  }
+}
+typeWriter();
 </script>
 
 </body>
