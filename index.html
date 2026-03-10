@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>System Terminal</title>
-
 <style>
 body{
   margin:0;
@@ -13,7 +12,7 @@ body{
   overflow:hidden;
 }
 
-/* Matrix kodları */
+/* Matrix arka plan */
 canvas{
   position:fixed;
   top:0;
@@ -23,7 +22,7 @@ canvas{
   z-index:0;
 }
 
-/* Metin içeriği kutu */
+/* Metin kutusu */
 .content{
   position:absolute;
   top:50%;
@@ -36,9 +35,9 @@ canvas{
   font-size:16px;
   line-height:1.6;
   z-index:1;
-  color:#ffffff; /* metin beyaz */
-  background: rgba(0,0,0,0.85); /* koyu kutu arka plan */
-  padding: 25px;
+  color:#ffffff;
+  background: rgba(0,0,0,0.85);
+  padding:25px;
   border-radius:12px;
   box-shadow: 0 0 20px rgba(0,255,156,0.2);
 }
@@ -109,21 +108,21 @@ function drawMatrix(){
 }
 setInterval(drawMatrix,33);
 
-// Yazı animasyonu
+// Beyaz tanıtım yazısı
 const bioText = `Merhaba, ben Yusuf
 
-Teknoloji ve yazılım dünyasında sürekli öğrenen bir geliştiriciyim
-Özellikle Python ve yapay zeka alanlarında kendimi geliştiriyor
-projeler üretiyorum Amacım geleceğin yazılım sistemlerini
+Teknoloji ve yazılım dünyasında sürekli öğrenen bir geliştiriciyim.
+Özellikle Python ve yapay zeka alanlarında kendimi geliştiriyor,
+projeler üretiyorum. Amacım geleceğin yazılım sistemlerini
 tasarlayabilecek ve geliştirebilecek seviyeye ulaşmak.
 
 İlgi alanlarım arasında yazılım geliştirme, otomotiv teknolojileri
-ve ileri mühendislik sistemleri yer alıyor Her zaman öğrenmeye
+ve ileri mühendislik sistemleri yer alıyor. Her zaman öğrenmeye,
 denemeye ve yenilikçi çözümler üretmeye odaklanıyorum.
 
 Kısa vadede amacım kendi projelerimi hayata geçirmek ve
-deneyim kazanmak uzun vadede ise büyük teknoloji ve
-savunma sanayisi projelerinde aktif rol almak.
+deneyim kazanmak; uzun vadede ise büyük teknoloji ve
+savunma sanayisi projelerinde aktif rol almak.`;
 
 const bio = document.getElementById("bio");
 let i = 0;
@@ -136,9 +135,7 @@ function typeWriter(){
   }
 }
 typeWriter();
-
 </script>
 
 </body>
 </html>
-
