@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+[05:26, 10.03.2026] .: <!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -48,6 +48,68 @@ canvas{
   25%, 75%{opacity:0;}
 }
 </style>
+</head…
+[05:37, 10.03.2026] .: <!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Terminal</title>
+
+<style>
+body{
+  margin:0;
+  background:black;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* Matrix kodları */
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+}
+
+/* Metin içeriği */
+.content{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  max-width:700px;
+  width:90%;
+  text-align:center;
+  white-space:pre-line;
+  font-size:16px;
+  line-height:1.6;
+  z-index:1;
+  color:#ffffff; /* metin beyaz */
+}
+
+/* Terminal imleci */
+.cursor{
+  display:inline-block;
+  margin-left:4px;
+  animation:blink 1s steps(1,end) infinite;
+}
+
+@keyframes blink{
+  0%, 50%, 100%{opacity:1;}
+  25%, 75%{opacity:0;}
+}
+
+/* Mobil uyumluluk */
+@media (max-width:600px){
+  .content{
+    font-size:14px;
+    line-height:1.5;
+  }
+}
+</style>
 </head>
 
 <body>
@@ -79,7 +141,7 @@ function drawMatrix(){
   ctx.fillStyle = "rgba(0,0,0,0.05)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  ctx.fillStyle = "#00ff9c";
+  ctx.fillStyle = "#00ff9c"; // Matrix kodları yeşil
   ctx.font = fontSize + "px monospace";
 
   for(let i=0;i<drops.length;i++){
@@ -95,7 +157,7 @@ function drawMatrix(){
 setInterval(drawMatrix,33);
 
 // Yazı animasyonu
-const bioText = `Merhaba, ben yusuf
+const bioText = `Merhaba, ben Hacı.
 
 Teknoloji ve yazılım dünyasında sürekli öğrenen bir geliştiriciyim.
 Özellikle Python ve yapay zeka alanlarında kendimi geliştiriyor,
@@ -121,6 +183,7 @@ function typeWriter(){
   }
 }
 typeWriter();
+
 </script>
 
 </body>
