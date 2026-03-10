@@ -1,55 +1,4 @@
-[05:26, 10.03.2026] .: <!DOCTYPE html>
-<html lang="tr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>System Terminal</title>
-
-<style>
-body{
-  margin:0;
-  background:#000;
-  color:#00ff9c;
-  font-family:monospace;
-  overflow:hidden;
-}
-
-canvas{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  z-index:0;
-}
-
-.content{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  max-width:700px;
-  width:90%;
-  text-align:center;
-  white-space:pre-line;
-  font-size:16px;
-  line-height:1.6;
-  z-index:1;
-}
-
-.cursor{
-  display:inline-block;
-  margin-left:4px;
-  animation:blink 1s steps(1,end) infinite;
-}
-
-@keyframes blink{
-  0%, 50%, 100%{opacity:1;}
-  25%, 75%{opacity:0;}
-}
-</style>
-</head…
-[05:37, 10.03.2026] .: <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -74,7 +23,7 @@ canvas{
   z-index:0;
 }
 
-/* Metin içeriği */
+/* Metin içeriği kutu */
 .content{
   position:absolute;
   top:50%;
@@ -88,6 +37,10 @@ canvas{
   line-height:1.6;
   z-index:1;
   color:#ffffff; /* metin beyaz */
+  background: rgba(0,0,0,0.85); /* koyu kutu arka plan */
+  padding: 25px;
+  border-radius:12px;
+  box-shadow: 0 0 20px rgba(0,255,156,0.2);
 }
 
 /* Terminal imleci */
@@ -157,20 +110,20 @@ function drawMatrix(){
 setInterval(drawMatrix,33);
 
 // Yazı animasyonu
-const bioText = `Merhaba, ben Hacı.
+const bioText = `Merhaba, ben Yusuf
 
-Teknoloji ve yazılım dünyasında sürekli öğrenen bir geliştiriciyim.
-Özellikle Python ve yapay zeka alanlarında kendimi geliştiriyor,
-projeler üretiyorum. Amacım geleceğin yazılım sistemlerini
+Teknoloji ve yazılım dünyasında sürekli öğrenen bir geliştiriciyim
+Özellikle Python ve yapay zeka alanlarında kendimi geliştiriyor
+projeler üretiyorum Amacım geleceğin yazılım sistemlerini
 tasarlayabilecek ve geliştirebilecek seviyeye ulaşmak.
 
 İlgi alanlarım arasında yazılım geliştirme, otomotiv teknolojileri
-ve ileri mühendislik sistemleri yer alıyor. Her zaman öğrenmeye,
+ve ileri mühendislik sistemleri yer alıyor Her zaman öğrenmeye
 denemeye ve yenilikçi çözümler üretmeye odaklanıyorum.
 
 Kısa vadede amacım kendi projelerimi hayata geçirmek ve
-deneyim kazanmak; uzun vadede ise büyük teknoloji ve
-savunma sanayisi projelerinde aktif rol almak.`;
+deneyim kazanmak uzun vadede ise büyük teknoloji ve
+savunma sanayisi projelerinde aktif rol almak.
 
 const bio = document.getElementById("bio");
 let i = 0;
